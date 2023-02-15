@@ -79,6 +79,11 @@ w1,example.org
 192.168.1.14 300
 `
 
+const zeroWeightWRR = `
+w1,example.org
+192.168.1.14 0
+`
+
 func TestWeightFileUpdate(t *testing.T) {
 	tests := []struct {
 		weightFilContent   string
@@ -95,6 +100,7 @@ func TestWeightFileUpdate(t *testing.T) {
 		{missingDomainWRR, true, nil, "Missing domain name"},
 		{wrongIpWRR, true, nil, "Wrong IP address"},
 		{wrongWeightWRR, true, nil, "Wrong weight value"},
+		{zeroWeightWRR, true, nil, "Wrong weight value"},
 	}
 
 	for i, test := range tests {
