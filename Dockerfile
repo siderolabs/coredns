@@ -1,4 +1,6 @@
-FROM --platform=$BUILDPLATFORM debian:stable-slim AS build
+ARG DEBIAN_IMAGE=debian:stable-slim
+ARG BASE=gcr.io/distroless/static-debian11:nonroot
+FROM --platform=$BUILDPLATFORM ${DEBIAN_IMAGE} AS build
 SHELL [ "/bin/sh", "-ec" ]
 
 RUN export DEBCONF_NONINTERACTIVE_SEEN=true \
@@ -12,7 +14,7 @@ RUN export DEBCONF_NONINTERACTIVE_SEEN=true \
 COPY coredns /coredns
 RUN setcap cap_net_bind_service=+ep /coredns
 
-FROM --platform=$TARGETPLATFORM gcr.io/distroless/static-debian11:nonroot
+FROM --platform=$TARGETPLATFORM ${BASE}
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /coredns /coredns
 USER nonroot:nonroot
