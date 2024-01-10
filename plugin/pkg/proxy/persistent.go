@@ -3,6 +3,7 @@ package proxy
 import (
 	"crypto/tls"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/miekg/dns"
@@ -27,6 +28,8 @@ type Transport struct {
 	yield chan *persistConn
 	ret   chan *persistConn
 	stop  chan bool
+
+	wg sync.WaitGroup
 }
 
 func newTransport(proxyName, addr string) *Transport {
@@ -140,10 +143,21 @@ func (t *Transport) Yield(pc *persistConn) {
 }
 
 // Start starts the transport's connection manager.
-func (t *Transport) Start() { go t.connManager() }
+func (t *Transport) Start() {
+	t.wg.Add(1)
+	go func() {
+		defer t.wg.Done()
+
+		t.connManager()
+	}()
+}
 
 // Stop stops the transport's connection manager.
-func (t *Transport) Stop() { close(t.stop) }
+func (t *Transport) Stop() {
+	defer t.wg.Wait()
+
+	close(t.stop)
+}
 
 // SetExpire sets the connection expire time in transport.
 func (t *Transport) SetExpire(expire time.Duration) { t.expire = expire }
