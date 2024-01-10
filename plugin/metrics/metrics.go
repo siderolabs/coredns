@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/coredns/caddy"
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/pkg/reuseport"
 
@@ -42,7 +41,7 @@ func New(addr string) *Metrics {
 		Addr:    addr,
 		Reg:     prometheus.DefaultRegisterer.(*prometheus.Registry),
 		zoneMap: make(map[string]struct{}),
-		plugins: pluginList(caddy.ListPlugins()),
+		plugins: pluginList(listPlugins()),
 	}
 
 	return met

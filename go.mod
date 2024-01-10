@@ -6,8 +6,7 @@ go 1.24.0
 
 require (
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible
-	github.com/Azure/go-autorest/autorest v0.11.30
-	github.com/Azure/go-autorest/autorest/azure/auth v0.5.13
+	github.com/Azure/go-autorest/autorest v0.11.30 // indirect
 	github.com/DataDog/dd-trace-go/v2 v2.4.1
 	github.com/apparentlymart/go-cidr v1.1.0
 	github.com/aws/aws-sdk-go-v2 v1.41.0
@@ -23,7 +22,6 @@ require (
 	github.com/go-logr/logr v1.4.3
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645
 	github.com/hashicorp/nomad/api v0.0.0-20250909143645-a3b86c697f38 // v1.10.5
-	github.com/infobloxopen/go-trees v0.0.0-20200715205103-96a057b8dfb9
 	github.com/matttproud/golang_protobuf_extensions v1.0.4
 	github.com/miekg/dns v1.1.69
 	github.com/opentracing/opentracing-go v1.2.0
@@ -50,13 +48,14 @@ require (
 	sigs.k8s.io/mcs-api v0.3.0
 )
 
+require golang.org/x/net v0.47.0
+
 require (
 	cloud.google.com/go/auth v0.17.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	github.com/Azure/go-autorest v14.2.0+incompatible // indirect
 	github.com/Azure/go-autorest/autorest/adal v0.9.22 // indirect
-	github.com/Azure/go-autorest/autorest/azure/cli v0.4.6 // indirect
 	github.com/Azure/go-autorest/autorest/date v0.3.0 // indirect
 	github.com/Azure/go-autorest/autorest/to v0.2.0 // indirect
 	github.com/Azure/go-autorest/logger v0.2.1 // indirect
@@ -95,7 +94,6 @@ require (
 	github.com/coreos/go-semver v0.3.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/ebitengine/purego v0.8.4 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.2 // indirect
@@ -180,7 +178,6 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
 	golang.org/x/mod v0.30.0 // indirect
-	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.33.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/term v0.38.0 // indirect
