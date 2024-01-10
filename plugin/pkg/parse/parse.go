@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Package parse contains functions that can be used in the setup code for plugins.
 package parse
 
