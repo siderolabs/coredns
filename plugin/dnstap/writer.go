@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/coredns/coredns/plugin/dnstap/msg"
+	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/coredns/coredns/request"
 
 	tap "github.com/dnstap/golang-dnstap"
@@ -42,3 +43,5 @@ func (w *ResponseWriter) WriteMsg(resp *dns.Msg) error {
 	w.TapMessageWithMetadata(w.ctx, r, state)
 	return nil
 }
+
+var log = clog.NewWithPlugin("dnstap")
