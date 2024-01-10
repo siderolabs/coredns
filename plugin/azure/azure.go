@@ -10,6 +10,7 @@ import (
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/file"
 	"github.com/coredns/coredns/plugin/pkg/fall"
+	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/coredns/coredns/plugin/pkg/upstream"
 	"github.com/coredns/coredns/request"
 
@@ -350,3 +351,5 @@ func (h *Azure) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) 
 
 // Name implements plugin.Handler.Name.
 func (h *Azure) Name() string { return "azure" }
+
+var log = clog.NewWithPlugin("azure")

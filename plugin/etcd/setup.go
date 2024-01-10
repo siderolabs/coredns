@@ -1,3 +1,5 @@
+//go:build etcd
+
 package etcd
 
 import (

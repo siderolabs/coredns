@@ -152,3 +152,12 @@ func (s *shard[T]) Walk(f func(map[uint64]T, uint64) bool) {
 }
 
 const shardSize = 256
+
+// Clear removes all elements from the all the shards.
+func (c *Cache[T]) Clear() {
+	for _, s := range &c.shards {
+		s.Lock()
+		clear(s.items)
+		s.Unlock()
+	}
+}
