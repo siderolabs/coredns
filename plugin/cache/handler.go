@@ -7,7 +7,6 @@ import (
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/metadata"
-	"github.com/coredns/coredns/plugin/metrics"
 	"github.com/coredns/coredns/request"
 
 	"github.com/miekg/dns"
@@ -27,7 +26,7 @@ func (c *Cache) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) 
 	}
 
 	now := c.now().UTC()
-	server := metrics.WithServer(ctx)
+	server := "local"
 
 	// On cache refresh, we will just use the DO bit from the incoming query for the refresh since we key our cache
 	// with the query DO bit. That means two separate cache items for the query DO bit true or false. In the situation
