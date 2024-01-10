@@ -9,6 +9,7 @@ import (
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/pkg/cache"
 	"github.com/coredns/coredns/plugin/pkg/dnsutil"
+	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/coredns/coredns/plugin/pkg/response"
 	"github.com/coredns/coredns/request"
 
@@ -319,3 +320,11 @@ const (
 	// Denial is the class defined for negative caching.
 	Denial = "denial"
 )
+
+var log = clog.NewWithPlugin("cache")
+
+// Clear clears the success and denial cache.
+func (c *Cache) Clear() {
+	c.pcache.Clear()
+	c.ncache.Clear()
+}

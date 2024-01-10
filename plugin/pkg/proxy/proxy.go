@@ -106,6 +106,13 @@ func (p *Proxy) incrementFails() {
 	atomic.AddUint32(&p.fails, 1)
 }
 
+// Close removes the finalizer and stops the health checking goroutine and the transport.
+func (p *Proxy) Close() {
+	runtime.SetFinalizer(p, nil)
+	p.probe.Stop()
+	p.transport.Stop()
+}
+
 const (
 	maxTimeout = 2 * time.Second
 )

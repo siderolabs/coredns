@@ -12,10 +12,12 @@ func filterRRSlice(rrs []dns.RR, ttl uint32, dup bool) []dns.RR {
 		if r.Header().Rrtype == dns.TypeOPT {
 			continue
 		}
-		r.Header().Ttl = ttl
 		if dup {
-			rs[j] = dns.Copy(r)
+			copied := dns.Copy(r)
+			copied.Header().Ttl = ttl
+			rs[j] = copied
 		} else {
+			r.Header().Ttl = ttl
 			rs[j] = r
 		}
 		j++
