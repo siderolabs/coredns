@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Package bind allows binding to a specific interface instead of bind to all of them.
 package bind
 

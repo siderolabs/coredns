@@ -10,6 +10,18 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1250/badge)](https://bestpractices.coreinfrastructure.org/projects/1250)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/coredns/coredns/badge)](https://scorecard.dev/viewer/?uri=github.com/coredns/coredns)
 
+# Important!
+
+**This is lobotomized version of CoreDNS, which is used in TalosOS project. The main idea is to trim as many dependencies
+as possible, to make it as small as possible. This is achivied using build tags on required dependencies. This ensures
+that we can easily update CoreDNS to the latest version, without worrying about merge conflicts.**
+
+
+
+**The rest of the README is the same as in the original CoreDNS project.**
+
+---
+
 CoreDNS is a DNS server/forwarder, written in Go, that chains [plugins](https://coredns.io/plugins).
 Each plugin performs a (DNS) function.
 

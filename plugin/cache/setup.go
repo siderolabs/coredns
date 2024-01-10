@@ -1,3 +1,5 @@
+//go:build ignore
+
 package cache
 
 import (
@@ -11,10 +13,7 @@ import (
 	"github.com/coredns/coredns/core/dnsserver"
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/pkg/cache"
-	clog "github.com/coredns/coredns/plugin/pkg/log"
 )
-
-var log = clog.NewWithPlugin("cache")
 
 func init() { plugin.Register("cache", setup) }
 
