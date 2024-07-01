@@ -136,10 +136,6 @@ func Parse(f io.Reader, origin, fileName string, serial int64) (*Zone, error) {
 	z := NewZone(origin, fileName)
 	seenSOA := false
 	for rr, ok := zp.Next(); ok; rr, ok = zp.Next() {
-		if err := zp.Err(); err != nil {
-			return nil, err
-		}
-
 		if !seenSOA {
 			if s, ok := rr.(*dns.SOA); ok {
 				seenSOA = true
@@ -161,6 +157,10 @@ func Parse(f io.Reader, origin, fileName string, serial int64) (*Zone, error) {
 	}
 	if zp.Err() != nil {
 		return nil, fmt.Errorf("failed to parse file %q for origin %s with error %v", fileName, origin, zp.Err())
+	}
+
+	if err := zp.Err(); err != nil {
+		return nil, err
 	}
 
 	return z, nil
