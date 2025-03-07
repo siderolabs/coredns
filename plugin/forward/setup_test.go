@@ -382,3 +382,44 @@ func TestNextAlternate(t *testing.T) {
 		}
 	}
 }
+
+func TestFailfastAllUnhealthyUpstreams(t *testing.T) {
+	tests := []struct {
+		input          string
+		expectedRecVal bool
+		expectedErr    string
+	}{
+		// positive
+		{"forward . 127.0.0.1\n", false, ""},
+		{"forward . 127.0.0.1 {\nfailfast_all_unhealthy_upstreams\n}\n", true, ""},
+		// negative
+		{"forward . 127.0.0.1 {\nfailfast_all_unhealthy_upstreams false\n}\n", false, "Wrong argument count"},
+	}
+
+	for i, test := range tests {
+		c := caddy.NewTestController("dns", test.input)
+		fs, err := parseForward(c)
+
+		if err != nil {
+			if test.expectedErr == "" {
+				t.Errorf("Test %d: expected no error but found one for input %s, got: %v", i, test.input, err)
+			}
+			if !strings.Contains(err.Error(), test.expectedErr) {
+				t.Errorf("Test %d: expected error to contain: %v, found error: %v, input: %s", i, test.expectedErr, err, test.input)
+			}
+		} else {
+			if test.expectedErr != "" {
+				t.Errorf("Test %d: expected error but found no error for input %s", i, test.input)
+			}
+		}
+
+		if test.expectedErr != "" {
+			continue
+		}
+
+		f := fs[0]
+		if f.failfastUnhealthyUpstreams != test.expectedRecVal {
+			t.Errorf("Test %d: Expected Rec:%v, got:%v", i, test.expectedRecVal, f.failfastUnhealthyUpstreams)
+		}
+	}
+}
