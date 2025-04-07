@@ -1,8 +1,7 @@
 module github.com/coredns/coredns
 
 go 1.22.7
-
-toolchain go1.23.0
+toolchain go1.24.1
 
 require (
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible
@@ -29,7 +28,7 @@ require (
 	go.etcd.io/etcd/client/v3 v3.5.18
 	go.uber.org/automaxprocs v1.6.0
 	golang.org/x/crypto v0.33.0
-	golang.org/x/sys v0.30.0
+	golang.org/x/sys v0.32.0
 	google.golang.org/api v0.221.0
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.5
