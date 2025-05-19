@@ -32,6 +32,102 @@ func TestRequestRemote(t *testing.T) {
 	}
 }
 
+// TestRequestLocal tests LocalIP and LocalPort methods
+func TestRequestLocal(t *testing.T) {
+	st := testRequest()
+	if st.LocalIP() != "127.0.0.1" {
+		t.Errorf("Wrong LocalIP from request, got %s", st.LocalIP())
+	}
+	p := st.LocalPort()
+	if p == "" {
+		t.Errorf("Failed to get LocalPort from request")
+	}
+	if p != "53" {
+		t.Errorf("Wrong LocalPort from request, got %s", p)
+	}
+}
+
+// TestRequestAddrs tests RemoteAddr and LocalAddr methods
+func TestRequestAddrs(t *testing.T) {
+	st := testRequest()
+	remote := st.RemoteAddr()
+	if remote != "10.240.0.1:40212" {
+		t.Errorf("Wrong RemoteAddr from request, got %s", remote)
+	}
+	local := st.LocalAddr()
+	if local != "127.0.0.1:53" {
+		t.Errorf("Wrong LocalAddr from request, got %s", local)
+	}
+}
+
+// TestRequestProto tests Proto and Family methods together
+func TestRequestProto(t *testing.T) {
+	st := testRequest()
+	proto := st.Proto()
+	if proto != "udp" {
+		t.Errorf("Expected proto to be udp, got %s", proto)
+	}
+	family := st.Family()
+	if family != 1 {
+		t.Errorf("Expected family to be 1 (IPv4), got %d", family)
+	}
+}
+
+// TestRequestSizeAndDo tests the SizeAndDo method
+func TestRequestSizeAndDo(t *testing.T) {
+	st := testRequest()
+	m := new(dns.Msg)
+
+	// Test with no OPT in the response
+	modified := st.SizeAndDo(m)
+	if !modified {
+		t.Errorf("Expected SizeAndDo to return true")
+	}
+	if m.IsEdns0() == nil {
+		t.Errorf("Expected OPT record to be added to response")
+	}
+
+	// Test with existing OPT in the response
+	m = new(dns.Msg)
+	opt := new(dns.OPT)
+	opt.Hdr.Name = "."
+	opt.Hdr.Rrtype = dns.TypeOPT
+	opt.SetUDPSize(2048)
+	m.Extra = append(m.Extra, opt)
+
+	modified = st.SizeAndDo(m)
+	if !modified {
+		t.Errorf("Expected SizeAndDo to return true")
+	}
+	if m.IsEdns0() == nil {
+		t.Errorf("Expected OPT record to remain in response")
+	}
+	if m.IsEdns0().UDPSize() != 4096 {
+		t.Errorf("Expected UDP size to be updated to 4096, got %d", m.IsEdns0().UDPSize())
+	}
+}
+
+// TestRequestNewWithQuestion tests the NewWithQuestion method
+func TestRequestNewWithQuestion(t *testing.T) {
+	st := testRequest()
+	newReq := st.NewWithQuestion("example.org.", dns.TypeMX)
+
+	if newReq.Name() != "example.org." {
+		t.Errorf("Expected new request name to be example.org., got %s", newReq.Name())
+	}
+	if newReq.QType() != dns.TypeMX {
+		t.Errorf("Expected new request type to be MX, got %d", newReq.QType())
+	}
+
+	// Original request should be unchanged
+	if st.Name() != "example.com." {
+		t.Errorf("Expected original request to be unchanged, got %s", st.Name())
+	}
+	if st.QType() != dns.TypeA {
+		t.Errorf("Expected original request type to remain A, got %d", st.QType())
+	}
+}
+
 func TestRequestMalformed(t *testing.T) {
 	m := new(dns.Msg)
 	st := Request{Req: m}
