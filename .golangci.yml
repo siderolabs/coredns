@@ -2,13 +2,14 @@ version: "2"
 linters:
   default: none
   enable:
+    - copyloopvar
     - govet
     - ineffassign
     - staticcheck
     - unconvert
     - unused
-    - whitespace
     - usetesting
+    - whitespace
   exclusions:
     generated: lax
     presets:

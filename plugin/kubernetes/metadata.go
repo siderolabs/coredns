@@ -21,7 +21,6 @@ func (k *Kubernetes) Metadata(ctx context.Context, state request.Request) contex
 		})
 
 		for k, v := range pod.Labels {
-			v := v
 			metadata.SetValueFunc(ctx, "kubernetes/client-label/"+k, func() string {
 				return v
 			})
