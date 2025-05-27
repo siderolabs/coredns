@@ -1,7 +1,6 @@
 package tls
 
 import (
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -79,15 +78,8 @@ func TestNewTLSConfigFromArgs(t *testing.T) {
 
 func TestNewTLSConfigFromArgsWithRoot(t *testing.T) {
 	cert, key, ca := getPEMFiles(t)
-	tempDir, err := os.MkdirTemp("", "go-test-pemfiles")
-	defer func() {
-		if err := os.RemoveAll(tempDir); err != nil {
-			t.Error("failed to clean up temporary directory", err)
-		}
-	}()
-	if err != nil {
-		t.Error("failed to create temporary directory", err)
-	}
+	tempDir := t.TempDir()
+
 	root := tempDir
 	args := []string{cert, key, ca}
 	for i := range args {

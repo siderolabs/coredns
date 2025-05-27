@@ -8,6 +8,7 @@ linters:
     - unconvert
     - unused
     - whitespace
+    - usetesting
   exclusions:
     generated: lax
     presets:
