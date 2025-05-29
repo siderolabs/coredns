@@ -257,15 +257,15 @@ func TestTruncation(t *testing.T) {
 		reply := new(dns.Msg)
 		reply.SetReply(m)
 
-		for i := 0; i < 61; i++ {
+		for i := range 61 {
 			reply.Answer = append(reply.Answer, test.SRV(fmt.Sprintf("http.service.tcp.srv.k8s.example.org. 5 IN SRV 0 0 80 10-144-230-%d.default.pod.k8s.example.org.", i)))
 		}
 
-		for i := 0; i < 5; i++ {
+		for i := range 5 {
 			reply.Extra = append(reply.Extra, test.A(fmt.Sprintf("ip-10-10-52-5%d.subdomain.example.org. 5 IN A 10.10.52.5%d", i, i)))
 		}
 
-		for i := 0; i < 5; i++ {
+		for i := range 5 {
 			reply.Ns = append(reply.Ns, test.NS(fmt.Sprintf("srv.subdomain.example.org. 5 IN NS ip-10-10-33-6%d.subdomain.example.org.", i)))
 		}
 
@@ -319,7 +319,7 @@ func TestRequestMatch(t *testing.T) {
 func BenchmarkRequestDo(b *testing.B) {
 	st := testRequest()
 
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		st.Do()
 	}
 }
@@ -327,7 +327,7 @@ func BenchmarkRequestDo(b *testing.B) {
 func BenchmarkRequestSize(b *testing.B) {
 	st := testRequest()
 
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		st.Size()
 	}
 }
@@ -347,7 +347,7 @@ func BenchmarkRequestScrub(b *testing.B) {
 	}
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		st.Scrub(reply.Copy())
 	}
 }

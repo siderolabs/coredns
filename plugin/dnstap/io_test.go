@@ -30,7 +30,7 @@ func accept(t *testing.T, l net.Listener, count int) {
 		t.Fatalf("Server decoder: %s", err)
 	}
 
-	for i := 0; i < count; i++ {
+	for range count {
 		if _, err := dec.Decode(); err != nil {
 			t.Errorf("Server decode: %s", err)
 		}
@@ -96,7 +96,7 @@ func TestRace(t *testing.T) {
 	defer dio.close()
 
 	wg.Add(count)
-	for i := 0; i < count; i++ {
+	for range count {
 		go func() {
 			tmsg := tap.Dnstap_MESSAGE
 			dio.Dnstap(&tap.Dnstap{Type: &tmsg})
@@ -147,7 +147,7 @@ func TestReconnect(t *testing.T) {
 		wg.Done()
 	}()
 
-	for i := 0; i < count; i++ {
+	for range count {
 		time.Sleep(100 * time.Millisecond)
 		dio.Dnstap(&tmsg)
 	}

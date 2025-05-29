@@ -70,7 +70,7 @@ func BenchmarkController(b *testing.B) {
 	m.SetQuestion("svc1.testns.svc.cluster.local.", dns.TypeA)
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		k.ServeDNS(ctx, rw, m)
 	}
 }

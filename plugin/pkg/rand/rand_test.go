@@ -47,7 +47,7 @@ func TestIntDeterministic(t *testing.T) {
 	r2 := New(seed)
 
 	// They should produce the same sequence
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		val1 := r1.Int()
 		val2 := r2.Int()
 		if val1 != val2 {
@@ -123,11 +123,11 @@ func TestConcurrentAccess(t *testing.T) {
 	errors := make(chan error, numGoroutines*numOperations)
 
 	// Test concurrent Int() calls
-	for i := 0; i < numGoroutines; i++ {
+	for range numGoroutines {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			for j := 0; j < numOperations; j++ {
+			for range numOperations {
 				val := r.Int()
 				if val < 0 {
 					errors <- nil
@@ -137,11 +137,11 @@ func TestConcurrentAccess(t *testing.T) {
 	}
 
 	// Test concurrent Perm() calls
-	for i := 0; i < numGoroutines; i++ {
+	for range numGoroutines {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			for j := 0; j < numOperations; j++ {
+			for range numOperations {
 				perm := r.Perm(5)
 				if len(perm) != 5 {
 					errors <- nil
@@ -172,11 +172,11 @@ func TestConcurrentMixedOperations(t *testing.T) {
 	errors := make(chan error, numGoroutines*numOperations)
 
 	// Mix of Int() and Perm() operations running concurrently
-	for i := 0; i < numGoroutines; i++ {
+	for i := range numGoroutines {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
-			for j := 0; j < numOperations; j++ {
+			for j := range numOperations {
 				if j%2 == 0 {
 					val := r.Int()
 					if val < 0 {

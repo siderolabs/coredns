@@ -242,7 +242,7 @@ func TestDial_MultipleCallsAfterStop(t *testing.T) {
 	tr.Stop()
 	time.Sleep(50 * time.Millisecond)
 
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		_, _, err := tr.Dial("udp")
 		if err == nil {
 			t.Errorf("Attempt %d: %s: %s", i+1, testMsgExpectedError, testMsgUnexpectedNilError)

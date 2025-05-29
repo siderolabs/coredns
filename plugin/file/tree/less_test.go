@@ -63,7 +63,7 @@ Tests:
 		}
 
 		sort.Sort(set(test.in))
-		for i := 0; i < len(test.in); i++ {
+		for i := range len(test.in) {
 			if test.in[i] != test.out[i] {
 				t.Errorf("Test %d: expected %s, got %s", j, test.out[i], test.in[i])
 				n := ""

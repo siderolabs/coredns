@@ -127,7 +127,7 @@ func TestMultiZoneBlockConfigs(t *testing.T) {
 		server *caddy.Instance
 		err    error
 	)
-	for j := 0; j < 3; j++ {
+	for j := range 3 {
 		corefile := `.:%d .:%d .:%d {
 		debug
 	}`
@@ -150,7 +150,7 @@ func TestMultiZoneBlockConfigs(t *testing.T) {
 	configs := reflect.ValueOf(ctxVal2.Interface()).Elem().FieldByName("configs")
 	configs2 := reflect.NewAt(configs.Type(), unsafe.Pointer(configs.UnsafeAddr())).Elem()
 
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		v := configs2.Index(i)
 		config := v.Interface().(*dnsserver.Config)
 		if !config.Debug {

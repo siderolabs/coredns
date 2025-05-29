@@ -603,7 +603,7 @@ func BenchmarkCacheResponse(b *testing.B) {
 	b.StartTimer()
 
 	j := 0
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		req := reqs[j]
 		c.ServeDNS(ctx, &test.ResponseWriter{}, req)
 		j = (j + 1) % 5

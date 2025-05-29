@@ -6,6 +6,7 @@ linters:
     - copyloopvar
     - govet
     - ineffassign
+    - intrange
     - staticcheck
     - unconvert
     - unused

@@ -276,7 +276,7 @@ func BenchmarkReplacer(b *testing.B) {
 	b.ReportAllocs()
 
 	replacer := New()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		replacer.Replace(context.TODO(), state, nil, "{type} {name} {size}")
 	}
 }
@@ -297,13 +297,13 @@ func BenchmarkReplacer_CommonLogFormat(b *testing.B) {
 
 	b.ResetTimer()
 	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		replacer.Replace(ctxt, state, w, CommonLogFormat)
 	}
 }
 
 func BenchmarkParseFormat(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		parseFormat(CommonLogFormat)
 	}
 }

@@ -157,7 +157,7 @@ func TestQUICStreamLimits(t *testing.T) {
 	streamsMu := sync.Mutex{}
 
 	// Attempt to open exactly the configured number of streams
-	for i := 0; i < streamCount; i++ {
+	for i := range streamCount {
 		wg.Add(1)
 		go func(idx int) {
 			defer wg.Done()
@@ -237,7 +237,7 @@ func TestQUICStreamLimits(t *testing.T) {
 	done := make(chan struct{})
 
 	// Launch goroutines to attempt opening additional streams
-	for i := 0; i < extraCount; i++ {
+	for i := range extraCount {
 		extraWg.Add(1)
 		go func(idx int) {
 			defer extraWg.Done()

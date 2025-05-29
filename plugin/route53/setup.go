@@ -50,7 +50,7 @@ func setup(c *caddy.Controller) error {
 
 		args := c.RemainingArgs()
 
-		for i := 0; i < len(args); i++ {
+		for i := range args {
 			parts := strings.SplitN(args[i], ":", 2)
 			if len(parts) != 2 {
 				return plugin.Error("route53", c.Errf("invalid zone %q", args[i]))

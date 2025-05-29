@@ -163,7 +163,7 @@ func TestMetricsRewriteRequestSize(t *testing.T) {
 	}
 
 	// Send multiple requests
-	for i := 0; i < numRequests; i++ {
+	for range numRequests {
 		if _, err = dns.Exchange(m, udp); err != nil {
 			t.Fatalf("Could not send message: %s", err)
 		}
@@ -195,7 +195,7 @@ func TestMetricsRewriteRequestSize(t *testing.T) {
 	defer srv2.Stop()
 
 	// Send the same requests with rewrite
-	for i := 0; i < numRequests; i++ {
+	for range numRequests {
 		if _, err = dns.Exchange(m, udp2); err != nil {
 			t.Fatalf("Could not send message: %s", err)
 		}

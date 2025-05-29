@@ -259,7 +259,7 @@ func emitAddressRecord(c chan<- []dns.RR, s msg.Service) string {
 func calcSRVWeight(numservices int) uint16 {
 	var services []msg.Service
 
-	for i := 0; i < numservices; i++ {
+	for range numservices {
 		services = append(services, msg.Service{})
 	}
 

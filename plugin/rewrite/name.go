@@ -428,7 +428,7 @@ func hasClosingDot(s string) bool {
 // getSubExprUsage returns the number of subexpressions used in s.
 func getSubExprUsage(s string) int {
 	subExprUsage := 0
-	for i := 0; i <= 100; i++ {
+	for i := range 101 {
 		if strings.Contains(s, "{"+strconv.Itoa(i)+"}") {
 			subExprUsage++
 		}

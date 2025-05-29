@@ -278,7 +278,7 @@ func (h *Route53) updateZones(ctx context.Context) error {
 	// Collect errors (if any). This will also sync on all zones updates
 	// completion.
 	var errs []string
-	for i := 0; i < len(h.zones); i++ {
+	for range len(h.zones) {
 		err := <-errc
 		if err != nil {
 			errs = append(errs, err.Error())
