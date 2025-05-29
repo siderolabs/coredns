@@ -45,8 +45,8 @@ func NewRequest(method, url string, m *dns.Msg) (*http.Request, error) {
 			return req, err
 		}
 
-		req.Header.Set("content-type", MimeType)
-		req.Header.Set("accept", MimeType)
+		req.Header.Set("Content-Type", MimeType)
+		req.Header.Set("Accept", MimeType)
 		return req, nil
 
 	case http.MethodPost:
@@ -59,8 +59,8 @@ func NewRequest(method, url string, m *dns.Msg) (*http.Request, error) {
 			return req, err
 		}
 
-		req.Header.Set("content-type", MimeType)
-		req.Header.Set("accept", MimeType)
+		req.Header.Set("Content-Type", MimeType)
+		req.Header.Set("Accept", MimeType)
 		return req, nil
 
 	default:
