@@ -8,6 +8,7 @@ linters:
     - ineffassign
     - intrange
     - nolintlint
+    - protogetter
     - staticcheck
     - unconvert
     - unused

@@ -40,7 +40,7 @@ func TestGrpc(t *testing.T) {
 	}
 
 	d := new(dns.Msg)
-	err = d.Unpack(reply.Msg)
+	err = d.Unpack(reply.GetMsg())
 	if err != nil {
 		t.Errorf("Expected no error but got: %s", err)
 	}

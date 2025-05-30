@@ -65,7 +65,7 @@ func (p *Proxy) query(ctx context.Context, req *dns.Msg) (*dns.Msg, error) {
 		return nil, err
 	}
 	ret := new(dns.Msg)
-	if err := ret.Unpack(reply.Msg); err != nil {
+	if err := ret.Unpack(reply.GetMsg()); err != nil {
 		return nil, err
 	}
 

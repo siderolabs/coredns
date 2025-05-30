@@ -209,13 +209,13 @@ func TestServergRPC_Query(t *testing.T) {
 		t.Errorf("Query() failed: %v", err)
 	}
 
-	if len(response.Msg) == 0 {
+	if len(response.GetMsg()) == 0 {
 		t.Error("Query() returned empty message")
 	}
 
 	// Verify the response can be unpacked
 	respMsg := new(dns.Msg)
-	err = respMsg.Unpack(response.Msg)
+	err = respMsg.Unpack(response.GetMsg())
 	if err != nil {
 		t.Errorf("Failed to unpack response message: %v", err)
 	}
