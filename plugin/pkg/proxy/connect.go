@@ -107,7 +107,7 @@ func (t *Transport) Dial(proto string) (*persistConn, bool, error) {
 func (p *Proxy) Connect(ctx context.Context, state request.Request, opts Options) (*dns.Msg, error) {
 	start := time.Now()
 
-	proto := ""
+	var proto string
 	switch {
 	case opts.ForceTCP: // TCP flag has precedence over UDP flag
 		proto = "tcp"

@@ -171,7 +171,7 @@ func (h *Hostsfile) parse(r io.Reader) *Map {
 			continue
 		}
 
-		family := 0
+		var family int
 		if addr.To4() != nil {
 			family = 1
 		} else {

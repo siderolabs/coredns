@@ -379,7 +379,8 @@ func (k *Kubernetes) findPods(r recordRequest, zone string) (pods []msg.Service,
 	}
 
 	zonePath := msg.Path(zone, coredns)
-	ip := ""
+
+	var ip string
 	if strings.Count(podname, "-") == 3 && !strings.Contains(podname, "--") {
 		ip = strings.ReplaceAll(podname, "-", ".")
 	} else {

@@ -34,14 +34,13 @@ func (c *Cache) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) 
 	// in which upstream doesn't support DNSSEC, the two cache items will effectively be the same. Regardless, any
 	// DNSSEC RRs in the response are written to cache with the response.
 
-	ttl := 0
 	i := c.getIgnoreTTL(now, state, server)
 	if i == nil {
 		crr := &ResponseWriter{ResponseWriter: w, Cache: c, state: state, server: server, do: do, ad: ad, cd: cd,
 			nexcept: c.nexcept, pexcept: c.pexcept, wildcardFunc: wildcardFunc(ctx)}
 		return c.doRefresh(ctx, state, crr)
 	}
-	ttl = i.ttl(now)
+	ttl := i.ttl(now)
 	if ttl < 0 {
 		// serve stale behavior
 		if c.verifyStale {

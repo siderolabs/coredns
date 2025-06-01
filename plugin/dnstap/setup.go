@@ -25,7 +25,7 @@ func parseConfig(c *caddy.Controller) ([]*Dnstap, error) {
 			MultipleTcpWriteBuf: 1,
 			MultipleQueue:       1,
 		}
-		endpoint := ""
+
 		d.repl = replacer.New()
 
 		args := c.RemainingArgs()
@@ -34,7 +34,7 @@ func parseConfig(c *caddy.Controller) ([]*Dnstap, error) {
 			return nil, c.ArgErr()
 		}
 
-		endpoint = args[0]
+		endpoint := args[0]
 
 		if len(args) >= 3 {
 			d.MultipleTcpWriteBuf, _ = strconv.Atoi(args[2])

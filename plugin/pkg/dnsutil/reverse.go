@@ -11,10 +11,8 @@ import (
 // 54.119.58.176.in-addr.arpa. becomes 176.58.119.54. If the conversion
 // fails the empty string is returned.
 func ExtractAddressFromReverse(reverseName string) string {
-	search := ""
-
 	f := reverse
-
+	var search string
 	switch {
 	case strings.HasSuffix(reverseName, IP4arpa):
 		search = strings.TrimSuffix(reverseName, IP4arpa)
