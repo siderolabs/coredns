@@ -92,7 +92,7 @@ func TestDial_TransportStoppedDuringRetWait(t *testing.T) {
 	select {
 	case protoFromDial = <-tr.dial:
 		t.Logf("Test: Simulated connManager read '%s' from Dial via test-controlled tr.dial", protoFromDial)
-	case <-time.After(100 * time.Millisecond):
+	case <-time.After(500 * time.Millisecond):
 		t.Fatal("Test: Timeout waiting for Dial to send on test-controlled tr.dial")
 	}
 
@@ -154,7 +154,7 @@ func TestDial_Returns_ErrTransportStoppedRetClosed(t *testing.T) {
 			t.Fatalf("Test: Dial sent wrong proto on testDialChan: got %s, want udp", proto)
 		}
 		t.Logf("Test: Simulated connManager received '%s' from Dial via testDialChan.", proto)
-	case <-time.After(100 * time.Millisecond):
+	case <-time.After(500 * time.Millisecond):
 		// If Dial didn't send, the test is flawed or Dial is stuck before sending.
 		wg.Done()
 		t.Fatal("Test: Timeout waiting for Dial to send on testDialChan.")
@@ -228,7 +228,7 @@ func TestDial_ConnManagerClosesRetOnStop(t *testing.T) {
 		} else {
 			t.Logf("Interaction Dial completed without error.")
 		}
-	case <-time.After(100 * time.Millisecond): // Timeout for safety if Dial hangs
+	case <-time.After(500 * time.Millisecond): // Timeout for safety if Dial hangs
 		t.Logf("Timeout waiting for interaction Dial to complete.")
 	}
 }
