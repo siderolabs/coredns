@@ -456,11 +456,11 @@ func (dns *dnsControl) HasSynced() bool {
 	d := dns.nsController.HasSynced()
 	e := true
 	if dns.svcImportController != nil {
-		c = dns.svcImportController.HasSynced()
+		e = dns.svcImportController.HasSynced()
 	}
 	f := true
 	if dns.mcEpController != nil {
-		c = dns.mcEpController.HasSynced()
+		f = dns.mcEpController.HasSynced()
 	}
 	return a && b && c && d && e && f
 }
