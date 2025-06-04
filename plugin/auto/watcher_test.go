@@ -8,6 +8,7 @@ import (
 )
 
 func TestWatcher(t *testing.T) {
+	t.Parallel()
 	tempdir, err := createFiles(t)
 	if err != nil {
 		t.Fatal(err)
@@ -50,6 +51,7 @@ func TestWatcher(t *testing.T) {
 }
 
 func TestSymlinks(t *testing.T) {
+	t.Parallel()
 	tempdir, err := createFiles(t)
 	if err != nil {
 		t.Fatal(err)

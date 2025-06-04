@@ -18,6 +18,7 @@ www IN A 127.0.0.1
 `
 
 func TestWalk(t *testing.T) {
+	t.Parallel()
 	tempdir, err := createFiles(t)
 	if err != nil {
 		t.Fatal(err)
@@ -45,6 +46,7 @@ func TestWalk(t *testing.T) {
 }
 
 func TestWalkNonExistent(t *testing.T) {
+	t.Parallel()
 	nonExistingDir := "highly_unlikely_to_exist_dir"
 
 	ldr := loader{
