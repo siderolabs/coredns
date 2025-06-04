@@ -196,6 +196,7 @@ func TestQuicSetup(t *testing.T) {
 
 // assertMaxStreamsValue compares the actual MaxQUICStreams value with the expected one
 func assertMaxStreamsValue(t *testing.T, testIndex int, testInput string, actual, expected *int) {
+	t.Helper()
 	if actual == nil && expected == nil {
 		return
 	}
@@ -214,6 +215,7 @@ func assertMaxStreamsValue(t *testing.T, testIndex int, testInput string, actual
 
 // assertWorkerPoolSizeValue compares the actual MaxQUICWorkerPoolSize value with the expected one
 func assertWorkerPoolSizeValue(t *testing.T, testIndex int, testInput string, actual, expected *int) {
+	t.Helper()
 	if actual == nil && expected == nil {
 		return
 	}

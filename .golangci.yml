@@ -10,6 +10,7 @@ linters:
     - nolintlint
     - protogetter
     - staticcheck
+    - thelper
     - unconvert
     - unused
     - usetesting

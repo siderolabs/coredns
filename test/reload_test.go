@@ -44,6 +44,7 @@ func TestReload(t *testing.T) {
 }
 
 func send(t *testing.T, server string) {
+	t.Helper()
 	m := new(dns.Msg)
 	m.SetQuestion("whoami.example.org.", dns.TypeSRV)
 

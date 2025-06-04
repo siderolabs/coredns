@@ -62,6 +62,7 @@ func TestWalkNonExistent(t *testing.T) {
 }
 
 func createFiles(t *testing.T) (string, error) {
+	t.Helper()
 	dir := t.TempDir()
 
 	for _, name := range dbFiles {

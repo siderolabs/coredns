@@ -35,16 +35,17 @@ func TestResponseReverter(t *testing.T) {
 	r, _ := newNameRule("stop", "regex", `(core)\.(dns)\.(rocks)`, "{2}.{1}.{3}", "answer", "name", `(dns)\.(core)\.(rocks)`, "{2}.{1}.{3}")
 	rules = append(rules, r)
 
-	doReverterTests(rules, t)
+	doReverterTests(t, rules)
 
 	rules = []Rule{}
 	r, _ = newNameRule("continue", "regex", `(core)\.(dns)\.(rocks)`, "{2}.{1}.{3}", "answer", "name", `(dns)\.(core)\.(rocks)`, "{2}.{1}.{3}")
 	rules = append(rules, r)
 
-	doReverterTests(rules, t)
+	doReverterTests(t, rules)
 }
 
-func doReverterTests(rules []Rule, t *testing.T) {
+func doReverterTests(t *testing.T, rules []Rule) {
+	t.Helper()
 	ctx := context.TODO()
 	for i, tc := range tests {
 		m := new(dns.Msg)
@@ -105,7 +106,7 @@ func TestValueResponseReverter(t *testing.T) {
 	}
 	rules = append(rules, r)
 
-	doValueReverterTests("stop", rules, t)
+	doValueReverterTests(t, "stop", rules)
 
 	rules = []Rule{}
 	r, err = newNameRule("continue", "regex", `(.*)\.domain\.uk`, "{1}.cluster.local", "answer", "name", `(.*)\.cluster\.local`, "{1}.domain.uk", "answer", "value", `(.*)\.cluster\.local`, "{1}.domain.uk")
@@ -115,7 +116,7 @@ func TestValueResponseReverter(t *testing.T) {
 	}
 	rules = append(rules, r)
 
-	doValueReverterTests("continue", rules, t)
+	doValueReverterTests(t, "continue", rules)
 
 	rules = []Rule{}
 	r, err = newNameRule("stop", "suffix", `.domain.uk`, ".cluster.local", "answer", "auto", "answer", "value", `(.*)\.cluster\.local`, "{1}.domain.uk")
@@ -125,7 +126,7 @@ func TestValueResponseReverter(t *testing.T) {
 	}
 	rules = append(rules, r)
 
-	doValueReverterTests("suffix", rules, t)
+	doValueReverterTests(t, "suffix", rules)
 
 	// multiple rules
 	rules = []Rule{}
@@ -143,10 +144,11 @@ func TestValueResponseReverter(t *testing.T) {
 	}
 	rules = append(rules, r)
 
-	doValueReverterTests("suffix_multiple", rules, t)
+	doValueReverterTests(t, "suffix_multiple", rules)
 }
 
-func doValueReverterTests(name string, rules []Rule, t *testing.T) {
+func doValueReverterTests(t *testing.T, name string, rules []Rule) {
+	t.Helper()
 	ctx := context.TODO()
 	for i, tc := range valueTests {
 		m := new(dns.Msg)

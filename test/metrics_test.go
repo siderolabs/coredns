@@ -117,6 +117,7 @@ func getBucketCount(mf *test.MetricFamily, bucketLabel string) (int, error) {
 
 // extractRequestSizeBucketCounts extracts bucket counts from DNS request size metrics
 func extractRequestSizeBucketCounts(t *testing.T, metrics []*test.MetricFamily, label string) (int, int, error) {
+	t.Helper()
 	var countBelow100, countAbove100 int
 	var err error
 

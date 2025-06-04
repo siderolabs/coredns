@@ -136,6 +136,7 @@ func TestWeightFileUpdate(t *testing.T) {
 }
 
 func checkDomainsWRR(t *testing.T, testIndex int, expectedDomains, domains map[string]weights) error {
+	t.Helper()
 	var ret error
 	retError := errors.New("Check domains failed")
 	for dname, expectedWeights := range expectedDomains {
@@ -410,6 +411,7 @@ func TestLoadBalanceWRR(t *testing.T) {
 }
 
 func checkTopIP(t *testing.T, i, j int, result []dns.RR, expectedTopIP string) {
+	t.Helper()
 	expected := net.ParseIP(expectedTopIP)
 	for _, r := range result {
 		switch r.Header().Rrtype {

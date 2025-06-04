@@ -218,6 +218,7 @@ func TestTransferIXFRFallback(t *testing.T) {
 }
 
 func validateAXFRResponse(t *testing.T, w *dnstest.MultiRecorder) {
+	t.Helper()
 	if len(w.Msgs) == 0 {
 		t.Fatal("Did not get back a zone response")
 	}

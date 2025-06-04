@@ -43,6 +43,7 @@ func TestMultipleListenerMock(t *testing.T) {
 }
 
 func testListenersCalled(t *testing.T, listenerNames []string, outputs []string) {
+	t.Helper()
 	for _, name := range listenerNames {
 		err := RegisterListener(NewMockListener(name))
 		if err != nil {

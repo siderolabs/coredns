@@ -14,6 +14,7 @@ import (
 )
 
 func testCase(t *testing.T, tapq, tapr *tap.Dnstap, q, r *dns.Msg, extraFormat string) {
+	t.Helper()
 	w := writer{t: t}
 	w.queue = append(w.queue, tapq, tapr)
 	h := Dnstap{

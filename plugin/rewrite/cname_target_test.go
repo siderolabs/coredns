@@ -88,10 +88,11 @@ func TestCNameTargetRewrite(t *testing.T) {
 		cnameTargetRule.Upstream = &MockedUpstream{}
 		rules = append(rules, rule)
 	}
-	doTestCNameTargetTests(rules, t)
+	doTestCNameTargetTests(t, rules)
 }
 
-func doTestCNameTargetTests(rules []Rule, t *testing.T) {
+func doTestCNameTargetTests(t *testing.T, rules []Rule) {
+	t.Helper()
 	tests := []struct {
 		from              string
 		fromType          uint16

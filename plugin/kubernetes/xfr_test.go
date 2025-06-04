@@ -105,6 +105,7 @@ func TestKubernetesIXFRCurrent(t *testing.T) {
 }
 
 func validateAXFR(t *testing.T, ch <-chan []dns.RR, multicluster bool) {
+	t.Helper()
 	xfr := []dns.RR{}
 	for rrs := range ch {
 		xfr = append(xfr, rrs...)

@@ -21,6 +21,7 @@ func TestDefaultProcessor(t *testing.T) {
 }
 
 func testProcessor(t *testing.T, processor cache.ProcessFunc, idx cache.Indexer) {
+	t.Helper()
 	obj := &api.Service{
 		ObjectMeta: metav1.ObjectMeta{Name: "service1", Namespace: "test1"},
 		Spec: api.ServiceSpec{
@@ -129,6 +130,7 @@ func TestDefaultProcessorWithPod(t *testing.T) {
 }
 
 func testProcessorWithPod(t *testing.T, processor cache.ProcessFunc, idx cache.Indexer) {
+	t.Helper()
 	container := api.Container{}
 	obj := &api.Pod{
 		ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "test1"},

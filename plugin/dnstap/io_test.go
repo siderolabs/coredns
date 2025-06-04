@@ -18,6 +18,7 @@ var (
 )
 
 func accept(t *testing.T, l net.Listener, count int) {
+	t.Helper()
 	server, err := l.Accept()
 	if err != nil {
 		t.Fatalf("Server accepted: %s", err)

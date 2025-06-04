@@ -8,6 +8,7 @@ import (
 )
 
 func getPEMFiles(t *testing.T) (cert, key, ca string) {
+	t.Helper()
 	tempDir, err := test.WritePEMFiles(t)
 	if err != nil {
 		t.Fatalf("Could not write PEM files: %s", err)

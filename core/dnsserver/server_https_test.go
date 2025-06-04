@@ -17,6 +17,7 @@ var (
 )
 
 func testServerHTTPS(t *testing.T, path string, validator func(*http.Request) bool) *http.Response {
+	t.Helper()
 	c := Config{
 		Zone:                    "example.com.",
 		Transport:               "https",
