@@ -34,7 +34,6 @@ linters:
         - name: blank-imports
 
         - name: context-as-argument
-          disabled: true
           arguments:
             - allowTypesBefore: "*testing.T"
 
@@ -81,17 +80,14 @@ linters:
           disabled: true
 
         - name: unnecessary-stmt
-          disabled: true
 
         - name: unreachable-code
 
         - name: unused-parameter
-          disabled: true
           arguments:
             - allowRegex: "^_"
 
         - name: use-any
-          disabled: true
 
         - name: var-declaration
 
