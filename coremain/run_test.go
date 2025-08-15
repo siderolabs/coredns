@@ -113,9 +113,7 @@ func TestConfLoader(t *testing.T) {
 func TestDefaultLoader(t *testing.T) {
 	// The working directory matters because defaultLoader() looks for "Corefile" in the current directory
 	tmpDir := t.TempDir()
-	if err := os.Chdir(tmpDir); err != nil {
-		t.Fatalf("Failed to change to temp directory: %v", err)
-	}
+	t.Chdir(tmpDir)
 
 	// Test without Corefile
 	input, err := defaultLoader("dns")
