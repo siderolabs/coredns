@@ -25,6 +25,7 @@ func setup(c *caddy.Controller) error {
 	})
 
 	c.OnStartup(t.OnStartup)
+	c.OnShutdown(t.OnShutdown)
 
 	return nil
 }
