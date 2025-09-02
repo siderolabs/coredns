@@ -2,6 +2,7 @@ package rewrite
 
 import (
 	"context"
+	"errors"
 	"reflect"
 	"testing"
 
@@ -205,5 +206,60 @@ func doTestCNameTargetTests(t *testing.T, rules []Rule) {
 			t.Errorf("Test %d: FAIL %s (%d) Actual and expected truncated flag do not match, actual: %v, expected: %v",
 				i, tc.from, tc.fromType, resp.Truncated, tc.expectedTruncated)
 		}
+	}
+}
+
+// nilUpstream returns a nil message to simulate an upstream failure path.
+type nilUpstream struct{}
+
+func (f *nilUpstream) Lookup(ctx context.Context, state request.Request, name string, typ uint16) (*dns.Msg, error) {
+	return nil, nil
+}
+
+// errUpstream returns a nil message with an error to simulate an upstream failure path.
+type errUpstream struct{}
+
+func (f *errUpstream) Lookup(ctx context.Context, state request.Request, name string, typ uint16) (*dns.Msg, error) {
+	return nil, errors.New("upstream failure")
+}
+
+func TestCNAMETargetRewrite_upstreamFailurePaths(t *testing.T) {
+	cases := []struct {
+		name     string
+		upstream UpstreamInt
+	}{
+		{name: "nil message, no error", upstream: &nilUpstream{}},
+		{name: "nil message, with error", upstream: &errUpstream{}},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			rule := cnameTargetRule{
+				rewriteType:     ExactMatch,
+				paramFromTarget: "bad.target.",
+				paramToTarget:   "good.target.",
+				nextAction:      Stop,
+				Upstream:        tc.upstream,
+			}
+
+			req := new(dns.Msg)
+			req.SetQuestion("bad.test.", dns.TypeA)
+			state := request.Request{Req: req}
+
+			rrState := &cnameTargetRuleWithReqState{rule: rule, state: state, ctx: context.Background()}
+
+			res := new(dns.Msg)
+			res.SetReply(req)
+			res.Answer = []dns.RR{&dns.CNAME{Hdr: dns.RR_Header{Name: "bad.test.", Rrtype: dns.TypeCNAME, Class: dns.ClassINET, Ttl: 60}, Target: "bad.target."}}
+
+			rr := &dns.CNAME{Hdr: dns.RR_Header{Name: "bad.test.", Rrtype: dns.TypeCNAME, Class: dns.ClassINET, Ttl: 60}, Target: "bad.target."}
+
+			rrState.RewriteResponse(res, rr)
+
+			finalTarget := res.Answer[0].(*dns.CNAME).Target
+			if finalTarget != "bad.target." {
+				t.Errorf("Expected answer to be %q, but got %q", "bad.target.", finalTarget)
+			}
+		})
 	}
 }

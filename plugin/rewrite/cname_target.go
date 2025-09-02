@@ -77,10 +77,17 @@ func (r *cnameTargetRuleWithReqState) RewriteResponse(res *dns.Msg, rr dns.RR) {
 			if cname.Target == fromTarget {
 				// create upstream request with the new target with the same qtype
 				r.state.Req.Question[0].Name = toTarget
+				// upRes can be nil if the internal query path didn't write a response
+				// (e.g. a plugin returned a success rcode without writing, dropped the query,
+				// or the context was canceled). Guard upRes before dereferencing.
 				upRes, err := r.rule.Upstream.Lookup(r.ctx, r.state, toTarget, r.state.Req.Question[0].Qtype)
-
 				if err != nil {
-					log.Errorf("Error upstream request %v", err)
+					log.Errorf("upstream lookup failed: %v", err)
+					return
+				}
+				if upRes == nil {
+					log.Errorf("upstream lookup returned nil")
+					return
 				}
 
 				var newAnswer []dns.RR
