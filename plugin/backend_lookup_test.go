@@ -213,8 +213,9 @@ func TestCNAMEHostIsNameAndIpIgnored(t *testing.T) {
 
 func TestCNAMEChainLimitAndLoop(t *testing.T) {
 	// Construct internal CNAME chain longer than maxCnameChainLength and ensure truncation of chain
-	var names []string
-	for i := range maxCnameChainLength + 2 {
+	chainLength := maxCnameChainLength + 2
+	names := make([]string, 0, chainLength)
+	for i := range chainLength {
 		names = append(names, fmt.Sprintf("c%d.example.org.", i))
 	}
 	chain := map[string]string{}
