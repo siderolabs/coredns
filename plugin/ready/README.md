@@ -25,7 +25,7 @@ ready [ADDRESS] {
 
 *ready* optionally takes an address; the default is `:8181`. The path is fixed to `/ready`. The
 readiness endpoint returns a 200 response code and the word "OK" when this server is ready. It
-returns a 503 otherwise *and* the list of plugins that are not ready. 
+returns a 503 otherwise *and* the list of plugins that are not ready.
 By default, once a plugin has signaled it is ready it will not be queried again.
 
 The *ready* directive can include an optional `monitor` parameter, defaulting to `until-ready`. The following values are supported:

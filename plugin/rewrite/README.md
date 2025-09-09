@@ -454,7 +454,7 @@ rewrite edns0 local unset 0xffee
 ### EDNS0_NSID
 
 This has no fields; it will add an NSID option with an empty string for the NSID. If the option already exists
-and the action is `replace` or `set`, then the NSID in the option will be set to the empty string.  
+and the action is `replace` or `set`, then the NSID in the option will be set to the empty string.
 The option can be removed with the `unset` action.
 
 ### EDNS0_SUBNET

@@ -107,7 +107,7 @@ kubernetes [ZONES...] {
   Services API (MCS-API). Specifying this option is generally paired with the
   installation of an MCS-API implementation and the ServiceImport and ServiceExport
   CRDs. The plugin MUST be authoritative for the zones listed here.
-* `startup_timeout` specifies the **DURATION** value that limits the time to wait for informer cache synced 
+* `startup_timeout` specifies the **DURATION** value that limits the time to wait for informer cache synced
   when the kubernetes plugin starts. If not specified, the default timeout will be 5s.
 
 Enabling zone transfer is done by using the *transfer* plugin.
