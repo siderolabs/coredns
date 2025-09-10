@@ -4,6 +4,7 @@ package dnsserver
 import (
 	"context"
 	"fmt"
+	"maps"
 	"net"
 	"runtime"
 	"runtime/debug"
@@ -99,9 +100,7 @@ func NewServer(addr string, group []*Config) (*Server, error) {
 		}
 
 		// copy tsig secrets
-		for key, secret := range site.TsigSecret {
-			s.tsigSecret[key] = secret
-		}
+		maps.Copy(s.tsigSecret, site.TsigSecret)
 
 		// compile custom plugin for everything
 		var stack plugin.Handler

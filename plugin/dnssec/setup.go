@@ -3,6 +3,7 @@ package dnssec
 import (
 	"fmt"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -94,13 +95,7 @@ func dnssecParse(c *caddy.Controller) ([]string, []*DNSKEY, int, bool, error) {
 	// Check if each keys owner name can actually sign the zones we want them to sign.
 	for _, k := range keys {
 		kname := plugin.Name(k.K.Header().Name)
-		ok := false
-		for i := range zones {
-			if kname.Matches(zones[i]) {
-				ok = true
-				break
-			}
-		}
+		ok := slices.ContainsFunc(zones, kname.Matches)
 		if !ok {
 			return zones, keys, capacity, splitkeys, fmt.Errorf("key %s (keyid: %d) can not sign any of the zones", string(kname), k.tag)
 		}

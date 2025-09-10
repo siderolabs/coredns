@@ -68,9 +68,8 @@ func BenchmarkAutoPath(b *testing.B) {
 	state := request.Request{W: &test.ResponseWriter{}, Req: req}
 
 	b.ReportAllocs()
-	b.ResetTimer()
 
-	for range b.N {
+	for b.Loop() {
 		result := k.AutoPath(state)
 		_ = result
 	}

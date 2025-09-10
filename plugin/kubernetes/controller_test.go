@@ -69,8 +69,7 @@ func BenchmarkController(b *testing.B) {
 	m := new(dns.Msg)
 	m.SetQuestion("svc1.testns.svc.cluster.local.", dns.TypeA)
 
-	b.ResetTimer()
-	for range b.N {
+	for b.Loop() {
 		k.ServeDNS(ctx, rw, m)
 	}
 }
@@ -294,8 +293,8 @@ func createMultiClusterHeadlessSvc(suffix int, mcsClient mcsClientset.Multiclust
 
 func TestServiceModified(t *testing.T) {
 	tests := []struct {
-		oldSvc   interface{}
-		newSvc   interface{}
+		oldSvc   any
+		newSvc   any
 		ichanged bool
 		echanged bool
 	}{

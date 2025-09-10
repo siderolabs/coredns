@@ -319,7 +319,7 @@ func TestRequestMatch(t *testing.T) {
 func BenchmarkRequestDo(b *testing.B) {
 	st := testRequest()
 
-	for range b.N {
+	for b.Loop() {
 		st.Do()
 	}
 }
@@ -327,7 +327,7 @@ func BenchmarkRequestDo(b *testing.B) {
 func BenchmarkRequestSize(b *testing.B) {
 	st := testRequest()
 
-	for range b.N {
+	for b.Loop() {
 		st.Size()
 	}
 }
@@ -346,8 +346,7 @@ func BenchmarkRequestScrub(b *testing.B) {
 			fmt.Sprintf("10-0-0-%d.default.pod.k8s.example.com. 10 IN A 10.0.0.%d", i, i)))
 	}
 
-	b.ResetTimer()
-	for range b.N {
+	for b.Loop() {
 		st.Scrub(reply.Copy())
 	}
 }

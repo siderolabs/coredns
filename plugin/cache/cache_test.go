@@ -600,10 +600,8 @@ func BenchmarkCacheResponse(b *testing.B) {
 		reqs[i].SetQuestion(q+".example.org.", dns.TypeA)
 	}
 
-	b.StartTimer()
-
 	j := 0
-	for range b.N {
+	for b.Loop() {
 		req := reqs[j]
 		c.ServeDNS(ctx, &test.ResponseWriter{}, req)
 		j = (j + 1) % 5

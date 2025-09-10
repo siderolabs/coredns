@@ -75,8 +75,7 @@ func (fakeRoute53) ListResourceRecordSets(_ context.Context, in *route53.ListRes
 }
 
 func TestRoute53(t *testing.T) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := t.Context()
 
 	r, err := New(ctx, fakeRoute53{}, map[string][]string{"bad.": {"0987654321"}}, time.Minute)
 	if err != nil {

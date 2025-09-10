@@ -6,7 +6,7 @@ import (
 )
 
 func BenchmarkFileParseInsert(b *testing.B) {
-	for range b.N {
+	for b.Loop() {
 		Parse(strings.NewReader(dbMiekENTNL), testzone, "stdin", 0)
 	}
 }

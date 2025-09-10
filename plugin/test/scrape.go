@@ -36,10 +36,10 @@ import (
 type (
 	// MetricFamily holds a prometheus metric.
 	MetricFamily struct {
-		Name    string        `json:"name"`
-		Help    string        `json:"help"`
-		Type    string        `json:"type"`
-		Metrics []interface{} `json:"metrics,omitempty"` // Either metric or summary.
+		Name    string `json:"name"`
+		Help    string `json:"help"`
+		Type    string `json:"type"`
+		Metrics []any  `json:"metrics,omitempty"` // Either metric or summary.
 	}
 
 	// metric is for all "single value" metrics.
@@ -150,7 +150,7 @@ func newMetricFamily(dtoMF *dto.MetricFamily) *MetricFamily {
 		Name:    dtoMF.GetName(),
 		Help:    dtoMF.GetHelp(),
 		Type:    dtoMF.GetType().String(),
-		Metrics: make([]interface{}, len(dtoMF.GetMetric())),
+		Metrics: make([]any, len(dtoMF.GetMetric())),
 	}
 	for i, m := range dtoMF.GetMetric() {
 		if dtoMF.GetType() == dto.MetricType_SUMMARY {

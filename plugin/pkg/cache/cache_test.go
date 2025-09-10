@@ -63,7 +63,7 @@ func TestCacheWalk(t *testing.T) {
 		exp[i] = 1
 	}
 	got := make([]int, 10*2)
-	c.Walk(func(items map[uint64]interface{}, key uint64) bool {
+	c.Walk(func(items map[uint64]any, key uint64) bool {
 		got[key] = items[key].(int)
 		return true
 	})
@@ -78,7 +78,7 @@ func BenchmarkCache(b *testing.B) {
 	b.ReportAllocs()
 
 	c := New(4)
-	for range b.N {
+	for b.Loop() {
 		c.Add(1, 1)
 		c.Get(1)
 	}

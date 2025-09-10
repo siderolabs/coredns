@@ -203,8 +203,8 @@ func newPrefixNameRule(nextAction string, auto bool, prefix, replacement string,
 }
 
 func (rule *prefixNameRule) Rewrite(ctx context.Context, state request.Request) (ResponseRules, Result) {
-	if strings.HasPrefix(state.Name(), rule.prefix) {
-		state.Req.Question[0].Name = rule.replacement + strings.TrimPrefix(state.Name(), rule.prefix)
+	if after, ok := strings.CutPrefix(state.Name(), rule.prefix); ok {
+		state.Req.Question[0].Name = rule.replacement + after
 		return rule.responseRuleFor(state)
 	}
 	return nil, RewriteIgnored

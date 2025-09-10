@@ -272,11 +272,10 @@ func BenchmarkReplacer(b *testing.B) {
 	r.AuthenticatedData = true
 	state := request.Request{W: w, Req: r}
 
-	b.ResetTimer()
 	b.ReportAllocs()
 
 	replacer := New()
-	for range b.N {
+	for b.Loop() {
 		replacer.Replace(context.TODO(), state, nil, "{type} {name} {size}")
 	}
 }
@@ -295,15 +294,14 @@ func BenchmarkReplacer_CommonLogFormat(b *testing.B) {
 	replacer := New()
 	ctxt := context.TODO()
 
-	b.ResetTimer()
 	b.ReportAllocs()
-	for range b.N {
+	for b.Loop() {
 		replacer.Replace(ctxt, state, w, CommonLogFormat)
 	}
 }
 
 func BenchmarkParseFormat(b *testing.B) {
-	for range b.N {
+	for b.Loop() {
 		parseFormat(CommonLogFormat)
 	}
 }

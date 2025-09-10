@@ -469,10 +469,7 @@ func NS(ctx context.Context, b ServiceBackend, zone string, state request.Reques
 // SOA returns a SOA record from the backend.
 func SOA(ctx context.Context, b ServiceBackend, zone string, state request.Request, opt Options) ([]dns.RR, error) {
 	minTTL := b.MinTTL(state)
-	ttl := uint32(300)
-	if minTTL < ttl {
-		ttl = minTTL
-	}
+	ttl := min(minTTL, uint32(300))
 
 	header := dns.RR_Header{Name: zone, Rrtype: dns.TypeSOA, Ttl: ttl, Class: dns.ClassINET}
 

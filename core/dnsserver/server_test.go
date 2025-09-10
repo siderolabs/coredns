@@ -115,8 +115,8 @@ func BenchmarkCoreServeDNS(b *testing.B) {
 	m.SetQuestion("aaa.example.com.", dns.TypeTXT)
 
 	b.ReportAllocs()
-	b.ResetTimer()
-	for range b.N {
+
+	for b.Loop() {
 		s.ServeDNS(ctx, w, m)
 	}
 }

@@ -40,8 +40,8 @@ func (r *cnameTargetRule) getFromAndToTarget(inputCName string) (from string, to
 	case ExactMatch:
 		return r.paramFromTarget, r.paramToTarget
 	case PrefixMatch:
-		if strings.HasPrefix(inputCName, r.paramFromTarget) {
-			return inputCName, r.paramToTarget + strings.TrimPrefix(inputCName, r.paramFromTarget)
+		if after, ok := strings.CutPrefix(inputCName, r.paramFromTarget); ok {
+			return inputCName, r.paramToTarget + after
 		}
 	case SuffixMatch:
 		if strings.HasSuffix(inputCName, r.paramFromTarget) {
