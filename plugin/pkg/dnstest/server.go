@@ -65,10 +65,10 @@ func NewMultipleServer(f dns.HandlerFunc) *Server {
 	ch2 := make(chan bool)
 
 	s1 := &dns.Server{
-		Handler: dns.HandlerFunc(f),
+		Handler: f,
 	} // udp
 	s2 := &dns.Server{
-		Handler: dns.HandlerFunc(f),
+		Handler: f,
 	} // tcp
 
 	for range 5 { // 5 attempts

@@ -429,7 +429,6 @@ func TestFailfastAllUnhealthyUpstreams(t *testing.T) {
 }
 
 func TestFailover(t *testing.T) {
-
 	server_fail_s := dnstest.NewMultipleServer(func(w dns.ResponseWriter, r *dns.Msg) {
 		ret := new(dns.Msg)
 		ret.SetRcode(r, dns.RcodeServerFailure)
