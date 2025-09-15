@@ -31,6 +31,9 @@ linters:
       - legacy
       - std-error-handling
   settings:
+    govet:
+      enable:
+        - nilness
     revive:
       rules:
         - name: blank-imports

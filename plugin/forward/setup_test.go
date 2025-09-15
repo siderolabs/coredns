@@ -112,7 +112,6 @@ func TestSetupTLS(t *testing.T) {
 	for i, test := range tests {
 		c := caddy.NewTestController("dns", test.input)
 		fs, err := parseForward(c)
-		f := fs[0]
 
 		if test.shouldErr && err == nil {
 			t.Errorf("Test %d: expected error but found %s for input %s", i, err, test.input)
@@ -127,6 +126,8 @@ func TestSetupTLS(t *testing.T) {
 				t.Errorf("Test %d: expected error to contain: %v, found error: %v, input: %s", i, test.expectedErr, err, test.input)
 			}
 		}
+
+		f := fs[0]
 
 		if !test.shouldErr && test.expectedServerName != "" && test.expectedServerName != f.tlsConfig.ServerName {
 			t.Errorf("Test %d: expected: %q, actual: %q", i, test.expectedServerName, f.tlsConfig.ServerName)
@@ -314,7 +315,7 @@ func TestMultiForward(t *testing.T) {
 	handlers := dnsserver.GetConfig(c).Handlers()
 	f1, ok := handlers[0].(*Forward)
 	if !ok {
-		t.Fatalf("expected first plugin to be Forward, got %v", reflect.TypeOf(f1.Next))
+		t.Fatalf("expected first plugin to be Forward, got %v", reflect.TypeOf(handlers[0]))
 	}
 
 	if f1.from != "1st.example.org." {

@@ -111,7 +111,7 @@ func TestMultiDnstap(t *testing.T) {
 	handlers := dnsserver.GetConfig(c).Handlers()
 	d1, ok := handlers[0].(*Dnstap)
 	if !ok {
-		t.Fatalf("expected first plugin to be Dnstap, got %v", reflect.TypeOf(d1.Next))
+		t.Fatalf("expected first plugin to be Dnstap, got %v", reflect.TypeOf(handlers[0]))
 	}
 
 	if d1.io.(*dio).endpoint != "dnstap1.sock" {
