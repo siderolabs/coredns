@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/coredns/caddy"
 	"github.com/coredns/coredns/core/dnsserver"
@@ -482,6 +483,12 @@ func TestFailover(t *testing.T) {
 		}
 		f.OnStartup()
 		defer f.OnShutdown()
+
+		// Reduce per-upstream read timeout to make the test fit within the
+		// per-query deadline defaultTimeout of 5 seconds.
+		for _, p := range f.proxies {
+			p.SetReadTimeout(500 * time.Millisecond)
+		}
 
 		m := new(dns.Msg)
 		m.SetQuestion("example.org.", dns.TypeA)
