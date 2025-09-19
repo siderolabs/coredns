@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/coredns/caddy"
 	"github.com/coredns/coredns/core/dnsserver"
@@ -378,6 +379,59 @@ func TestReloadUnreadyPlugin(t *testing.T) {
 	}
 
 	c1.Stop()
+}
+
+// TestReloadConcurrentRestartAndStop ensures there is no deadlock when a restart
+// races with a shutdown (issue #7314).
+func TestReloadConcurrentRestartAndStop(t *testing.T) {
+	corefileA := `.:0 {
+		reload 2s 1s
+		whoami
+	}`
+	corefileB := `.:0 {
+		reload 2s 1s
+		whoami
+		# change to trigger different config
+	}`
+
+	c, err := CoreDNSServer(corefileA)
+	if err != nil {
+		if strings.Contains(err.Error(), inUse) {
+			return
+		}
+		t.Fatalf("Could not start CoreDNS instance: %v", err)
+	}
+
+	restartErr := make(chan error, 1)
+	stopDone := make(chan struct{})
+
+	go func() {
+		_, err := c.Restart(NewInput(corefileB))
+		restartErr <- err
+	}()
+
+	// Small delay to increase overlap window
+	time.Sleep(50 * time.Millisecond)
+
+	go func() {
+		c.Stop()
+		close(stopDone)
+	}()
+
+	// Both operations should complete promptly; if not, we may be deadlocked.
+	select {
+	case <-stopDone:
+		// ok
+	case <-time.After(5 * time.Second):
+		t.Fatalf("Stop did not complete in time (possible deadlock)")
+	}
+	select {
+	case <-restartErr:
+		// ok: restart either succeeded or returned an error
+		// we only care about not hanging
+	case <-time.After(5 * time.Second):
+		t.Fatalf("Restart did not complete in time (possible deadlock)")
+	}
 }
 
 type unready struct {

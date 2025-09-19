@@ -50,6 +50,10 @@ type Server struct {
 	classChaos   bool                 // allow non-INET class queries
 
 	tsigSecret map[string]string
+
+	// Ensure Stop is idempotent when invoked concurrently (e.g., during reload and SIGTERM).
+	stopOnce   sync.Once
+	wgDoneOnce sync.Once
 }
 
 // MetadataCollector is a plugin that can retrieve metadata functions from all metadata providing plugins
@@ -212,33 +216,37 @@ func (s *Server) ListenPacket() (net.PacketConn, error) {
 // immediately.
 // This implements Caddy.Stopper interface.
 func (s *Server) Stop() (err error) {
-	if runtime.GOOS != "windows" {
-		// force connections to close after timeout
-		done := make(chan struct{})
-		go func() {
-			s.dnsWg.Done() // decrement our initial increment used as a barrier
-			s.dnsWg.Wait()
-			close(done)
-		}()
+	var onceErr error
+	s.stopOnce.Do(func() {
+		if runtime.GOOS != "windows" {
+			// force connections to close after timeout
+			done := make(chan struct{})
+			go func() {
+				// decrement our initial increment used as a barrier, but only once
+				s.wgDoneOnce.Do(func() { s.dnsWg.Done() })
+				s.dnsWg.Wait()
+				close(done)
+			}()
 
-		// Wait for remaining connections to finish or
-		// force them all to close after timeout
-		select {
-		case <-time.After(s.graceTimeout):
-		case <-done:
+			// Wait for remaining connections to finish or
+			// force them all to close after timeout
+			select {
+			case <-time.After(s.graceTimeout):
+			case <-done:
+			}
 		}
-	}
 
-	// Close the listener now; this stops the server without delay
-	s.m.Lock()
-	for _, s1 := range s.server {
-		// We might not have started and initialized the full set of servers
-		if s1 != nil {
-			err = s1.Shutdown()
+		// Close the listener now; this stops the server without delay
+		s.m.Lock()
+		for _, s1 := range s.server {
+			// We might not have started and initialized the full set of servers
+			if s1 != nil {
+				onceErr = s1.Shutdown()
+			}
 		}
-	}
-	s.m.Unlock()
-	return
+		s.m.Unlock()
+	})
+	return onceErr
 }
 
 // Address together with Stop() implement caddy.GracefulServer.

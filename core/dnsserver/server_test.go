@@ -2,6 +2,7 @@ package dnsserver
 
 import (
 	"context"
+	"sync"
 	"testing"
 
 	"github.com/coredns/coredns/plugin"
@@ -119,4 +120,23 @@ func BenchmarkCoreServeDNS(b *testing.B) {
 	for b.Loop() {
 		s.ServeDNS(ctx, w, m)
 	}
+}
+
+// Validates Stop is idempotent and safe under concurrent calls.
+func TestStopIsIdempotent(t *testing.T) {
+	t.Parallel()
+
+	s := &Server{}
+	s.dnsWg.Add(1)
+
+	const n = 10
+	var wg sync.WaitGroup
+	wg.Add(n)
+	for range n {
+		go func() {
+			defer wg.Done()
+			_ = s.Stop()
+		}()
+	}
+	wg.Wait()
 }
