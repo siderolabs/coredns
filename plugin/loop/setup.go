@@ -31,7 +31,10 @@ func setup(c *caddy.Controller) error {
 		go func() {
 			deadline := time.Now().Add(30 * time.Second)
 			conf := dnsserver.GetConfig(c)
-			lh := conf.ListenHosts[0]
+			lh := ""
+			if len(conf.ListenHosts) > 0 {
+				lh = conf.ListenHosts[0]
+			}
 			addr := net.JoinHostPort(lh, conf.Port)
 
 			for time.Now().Before(deadline) {

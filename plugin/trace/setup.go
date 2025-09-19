@@ -37,7 +37,7 @@ func traceParse(c *caddy.Controller) (*trace, error) {
 	)
 
 	cfg := dnsserver.GetConfig(c)
-	if cfg.ListenHosts[0] != "" {
+	if len(cfg.ListenHosts) > 0 && cfg.ListenHosts[0] != "" {
 		tr.serviceEndpoint = cfg.ListenHosts[0] + ":" + cfg.Port
 	}
 
