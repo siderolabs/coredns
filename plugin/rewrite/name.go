@@ -417,7 +417,7 @@ func parseAnswerRules(name string, args []string) (auto bool, rules ResponseRule
 	if auto && nameRules > 0 {
 		return false, nil, fmt.Errorf("auto name answer rule cannot be combined with explicit name anwer rules")
 	}
-	return
+	return auto, rules, nil
 }
 
 // hasClosingDot returns true if s has a closing dot at the end.

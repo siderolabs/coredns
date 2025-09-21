@@ -13,6 +13,7 @@ linters:
     - govet
     - ineffassign
     - intrange
+    - nakedret
     - nolintlint
     - prealloc
     - protogetter
