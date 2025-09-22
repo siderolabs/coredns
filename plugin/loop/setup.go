@@ -73,7 +73,10 @@ func parse(c *caddy.Controller) (*Loop, error) {
 		}
 
 		if len(c.ServerBlockKeys) > 0 {
-			zones = plugin.Host(c.ServerBlockKeys[0]).NormalizeExact()
+			z := plugin.Host(c.ServerBlockKeys[0]).NormalizeExact()
+			if len(z) > 0 {
+				zones = z
+			}
 		}
 	}
 	return New(zones[0]), nil
