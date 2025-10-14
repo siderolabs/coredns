@@ -19,7 +19,7 @@ large number of CPU cores.
 multisocket [NUM_SOCKETS]
 ~~~
 
-* **NUM_SOCKETS** - the number of servers that will listen on one port. Default value is equal to GOMAXPROCS.
+* **NUM_SOCKETS** - the number of servers that will listen on one port. Default value is equal to GOMAXPROCS. Maximum value is 1024.
 
 ## Examples
 
