@@ -503,3 +503,39 @@ func TestFailover(t *testing.T) {
 		}
 	}
 }
+
+func TestFailoverValidation(t *testing.T) {
+	cases := []struct {
+		name      string
+		input     string
+		wantError string
+	}{
+		{
+			name: "NoErrorDisallowed",
+			input: `forward . 127.0.0.1 {
+		failover NOERROR
+	}`,
+			wantError: "NoError cannot be used in failover",
+		},
+		{
+			name: "InvalidRcode",
+			input: `forward . 127.0.0.1 {
+		failover NOT_A_VALID_RCODE
+	}`,
+			wantError: "not a valid rcode",
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			c := caddy.NewTestController("dns", tc.input)
+			_, err := parseForward(c)
+			if err == nil {
+				t.Fatalf("expected error for %s, got nil", tc.name)
+			}
+			if !strings.Contains(err.Error(), tc.wantError) {
+				t.Fatalf("expected error to contain %q, got: %v", tc.wantError, err)
+			}
+		})
+	}
+}

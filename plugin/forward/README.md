@@ -100,7 +100,7 @@ forward FROM TO... {
   As an upper bound for **MAX**, consider that each concurrent query will use about 2kb of memory.
 * `next` If the `RCODE` (i.e. `NXDOMAIN`) is returned by the remote then execute the next plugin. If no next plugin is defined, or the next plugin is not a `forward` plugin, this setting is ignored
 * `failfast_all_unhealthy_upstreams` - determines the handling of requests when all upstream servers are unhealthy and unresponsive to health checks. Enabling this option will immediately return SERVFAIL responses for all requests. By default, requests are sent to a random upstream.
-* `failover` - By default when a DNS lookup fails to return a DNS response (e.g. timeout), _forward_ will attempt a lookup on the next upstream server. The `failover` option will make _forward_ do the same for any response with a response code matching an `RCODE` ( e.g. `SERVFAIL`、`REFUSED`). If all upstreams have been tried, the response from the last attempt is returned.
+* `failover` - By default when a DNS lookup fails to return a DNS response (e.g. timeout), _forward_ will attempt a lookup on the next upstream server. The `failover` option will make _forward_ do the same for any response with a response code matching an `RCODE` ( e.g. `SERVFAIL`、`REFUSED`). `NOERROR` cannot be used. If all upstreams have been tried, the response from the last attempt is returned.
 
 Also note the TLS config is "global" for the whole forwarding proxy if you need a different
 `tls_servername` for different upstreams you're out of luck.

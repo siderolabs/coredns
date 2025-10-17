@@ -320,15 +320,12 @@ func parseBlock(c *caddy.Controller, f *Forward) error {
 		toRcode := dns.StringToRcode
 
 		for _, rcode := range args {
-			var rc int
-			var ok bool
-
-			if rc, ok = toRcode[strings.ToUpper(rcode)]; !ok {
-				if rc == dns.RcodeSuccess {
-					return fmt.Errorf("NoError cannot be used in failover")
-				}
-
+			rc, ok := toRcode[strings.ToUpper(rcode)]
+			if !ok {
 				return fmt.Errorf("%s is not a valid rcode", rcode)
+			}
+			if rc == dns.RcodeSuccess {
+				return fmt.Errorf("NoError cannot be used in failover")
 			}
 
 			f.failoverRcodes = append(f.failoverRcodes, rc)
