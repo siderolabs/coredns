@@ -44,8 +44,8 @@ func (r *cnameTargetRule) getFromAndToTarget(inputCName string) (from string, to
 			return inputCName, r.paramToTarget + after
 		}
 	case SuffixMatch:
-		if strings.HasSuffix(inputCName, r.paramFromTarget) {
-			return inputCName, strings.TrimSuffix(inputCName, r.paramFromTarget) + r.paramToTarget
+		if before, ok := strings.CutSuffix(inputCName, r.paramFromTarget); ok {
+			return inputCName, before + r.paramToTarget
 		}
 	case SubstringMatch:
 		if strings.Contains(inputCName, r.paramFromTarget) {
