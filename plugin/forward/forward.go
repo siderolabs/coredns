@@ -191,6 +191,7 @@ func (f *Forward) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg
 				proxy.Healthcheck()
 			}
 
+			fails++
 			if fails < len(f.proxies) {
 				continue
 			}
