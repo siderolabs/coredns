@@ -13,6 +13,12 @@ initialization. Plugin updates improve forwarder reliability, extend GeoIP schem
 and fix issues in secondary, nomad, and kubernetes. Cache and file plugins also receive
 targeted performance tuning.
 
+Deprecations: The GeoIP plugin currently returns 0 for missing latitude/longitude, even though
+0,0 is a real location. In the next release, this behavior will change: missing coordinates
+will return an empty string instead. This avoids conflating “missing” with a real coordinate.
+Users relying on 0 as a sentinel value should update their logic before this change takes effect.
+See PR #7732 for reference.
+
 ## Brought to You By
 
 Alicia Y
