@@ -26,7 +26,7 @@ var quicCorefile = `quic://.:0 {
 var quicReloadCorefile = `quic://.:0 {
 		tls ../plugin/tls/test_cert.pem ../plugin/tls/test_key.pem ../plugin/tls/test_ca.pem
 		whoami
-		reload 2s
+		quic
 	}`
 
 // Corefile with custom stream limits
