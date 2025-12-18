@@ -156,12 +156,29 @@ func (s *ServerQUIC) serveQUICConnection(conn *quic.Conn) {
 			return
 		}
 
-		// Use a bounded worker pool
-		s.streamProcessPool <- struct{}{} // Acquire a worker slot, may block
-		go func(st *quic.Stream, cn *quic.Conn) {
-			defer func() { <-s.streamProcessPool }() // Release worker slot
-			s.serveQUICStream(st, cn)
-		}(stream, conn)
+		// Use a bounded worker pool with context cancellation
+		select {
+		case s.streamProcessPool <- struct{}{}:
+			// Got worker slot immediately
+			go func(st *quic.Stream, cn *quic.Conn) {
+				defer func() { <-s.streamProcessPool }() // Release worker slot
+				s.serveQUICStream(st, cn)
+			}(stream, conn)
+		default:
+			// Worker pool full, check for context cancellation
+			go func(st *quic.Stream, cn *quic.Conn) {
+				select {
+				case s.streamProcessPool <- struct{}{}:
+					// Got worker slot after waiting
+					defer func() { <-s.streamProcessPool }() // Release worker slot
+					s.serveQUICStream(st, cn)
+				case <-conn.Context().Done():
+					// Connection context was cancelled while waiting
+					st.Close()
+					return
+				}
+			}(stream, conn)
+		}
 	}
 }
 
